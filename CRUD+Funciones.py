@@ -42,4 +42,16 @@ def crear_usuario(datos):
     print("Usuario registrado correctamente...")
     
    
-   
+#4. Leer ususarios registrados 
+def leer_usuarios(datos): 
+    if not datos: 
+        print("No existen usuarios registrados...")
+    else: 
+        for usuario in datos.values():
+            print(f"correo: {usuario['correo']} | Contraseña: {usuario['contrasena']}")
+            
+        
+        
+        
+
+        
