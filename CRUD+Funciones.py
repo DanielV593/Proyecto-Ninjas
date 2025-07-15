@@ -72,6 +72,16 @@ def eliminar_usuario(datos):
     else: 
         print("El correo ingresado no existe o no esta registrado...")
         
+#7. Probar login
+def login(datos): 
+    correo = input("Ingrese el Correo: ")
+    contrasena = input("Ingrese la Contraseña: ")
+    if correo in datos and datos[correo]["contrasena"] == contrasena:
+        print("ACCESO EXITOSO...")
+    else:
+        print("Correo o Contraseña Incorrectos ")
+        
+ 
         
         
         
