@@ -25,3 +25,21 @@ def guardar_datos(datos):
             file.write(str(usuario) + "\n")
     print("Los datos se han guardado correctamente")
     
+#3. Crear ususario - Registros
+def crear_usuario(datos):
+    correo = input("Ingrese el correo: ")
+    if correo in datos: 
+        print("El correo ingresado ya se encuentra registrado, por favor ingrese uno diferente:  ")
+    if "@" not in correo or "." not in correo:
+        print("Correo no valido")
+        return
+    contrasena = input("Ingrese una contraseña (minimo 6 caracteres): ")
+    if len(contrasena) < 6: 
+       print("Contraseña muy corta por favor ingrese otra: ")
+       return
+    usuario= {"correo": correo, "contraseña": contrasena}
+    datos[correo] = usuario 
+    print("Usuario registrado correctamente...")
+    
+   
+   
