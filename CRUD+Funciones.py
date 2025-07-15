@@ -50,6 +50,21 @@ def leer_usuarios(datos):
         for usuario in datos.values():
             print(f"correo: {usuario['correo']} | Contraseña: {usuario['contrasena']}")
             
+#5. Actualizar contraseña
+def actualizar_contraseña(datos): 
+    correo = input("Ingrese el correo del usuario a actualizar: ")
+    if correo not in datos:
+        print("El correo no esta registrado o no existe, por favor ingresa uno valido: ")
+        return
+    nueva_contra = input("Ingrese una nueva contraseña (Minimo 6 caracteres): ")
+    if len(nueva_contra) < 6:
+        print("La contraseña ingresada es demasiado corta. Intente nuevamente: ")
+        return
+    datos [correo]["contraseña"] = nueva_contra
+    print("Contraseña actualizada correctamente ")
+    
+
+        
         
         
         
