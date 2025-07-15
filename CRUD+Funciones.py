@@ -72,7 +72,7 @@ def eliminar_usuario(datos):
     else: 
         print("El correo ingresado no existe o no esta registrado...")
         
-#7. Probar login
+#7. Loggear con los datos registrados USUARIO Y CONTRASEÑA
 def login(datos): 
     correo = input("Ingrese el Correo: ")
     contrasena = input("Ingrese la Contraseña: ")
@@ -81,9 +81,42 @@ def login(datos):
     else:
         print("Correo o Contraseña Incorrectos ")
         
- 
+#8. MENU DEL SISTEMA
+def menu():
+    datos = cargar_datos()
+    while True:
+        print("\n--- GESTIÓN DE USUARIOS ---\n")
+        print("1. Registrar nuevo usuario")
+        print("2. Leer usuarios")
+        print("3. Actualizar contraseña")
+        print("4. Eliminar usuario")
+        print("5. Guardar cambios")
+        print("6. Iniciar sesión")
+        print("7. Salir")
+        opcion = input("Selecciona una opción: ")
         
-        
-        
+        if opcion == "1":
+            crear_usuario(datos)
+        elif opcion == "2":
+            leer_usuarios(datos)
+        elif opcion == "3":
+            actualizar_contraseña(datos)
+        elif opcion == "4":
+            eliminar_usuario(datos)
+        elif opcion == "5":
+            guardar_datos(datos)
+        elif opcion == "6":
+            login(datos)
+        elif opcion == "7":
+            confirmar = input("Seguro/a que desea salir?(Sus cambios no se guardaran): (s/n)").lower()
+            if confirmar == "s": 
+                print("Saliendo sin guardar...")
+                break
+            
+            else: 
+                print("Volviendo al menu...")
+        else: 
+            print("Opcion invalida... Por favor ingrese una del menu")
 
+menu()
         
