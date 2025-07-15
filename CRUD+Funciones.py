@@ -19,3 +19,9 @@ def cargar_datos():
         return datos
     
 #2. Apartado para guardar datos en el archivo creado... 
+def guardar_datos(datos):
+    with open(archivo, "w", encoding="utf-8") as file:
+        for usuario in datos.values():
+            file.write(str(usuario) + "\n")
+    print("Los datos se han guardado correctamente")
+    
