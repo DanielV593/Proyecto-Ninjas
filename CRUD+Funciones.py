@@ -63,7 +63,14 @@ def actualizar_contraseña(datos):
     datos [correo]["contraseña"] = nueva_contra
     print("Contraseña actualizada correctamente ")
     
-
+#6. Eliminar usuario
+def eliminar_usuario(datos): 
+    correo = input("Ingrese el correo del usuario que se desea eliminar: ")
+    if correo in datos:
+        del datos[correo]
+        print("El usuario ha sido eliminado correctamente: ")
+    else: 
+        print("El correo ingresado no existe o no esta registrado...")
         
         
         
