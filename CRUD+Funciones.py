@@ -167,7 +167,15 @@ def generar_habilidades(habilidades_usadas):
     while len(habilidades)<3:
         if valor not in habilidades_usadas:
             habilidades.append(valor)
-            
+            habilidades_usadas.append(valor)
+        valor+=30
+        if valor>100:
+            valor=20
+    return habilidades
+    
+
+
+
 
             
            
