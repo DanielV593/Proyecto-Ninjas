@@ -134,6 +134,9 @@ with open(archivo_ninja,"r",encoding="uft-8") as file:
     lineas=file.readlines()
     datos_ninjas={}
     for linea in lineas:
+        try:
+            ninja=eval(linea.strip())
+        except:
 
 
 
