@@ -142,18 +142,28 @@ def cargar_ninjas():
                 continue
         return datos_ninjas
 #guardar datos de los ninjas creados en el archivo
-def guardar_ninjas(datos_ninjas):
+def guardar_ninjas(datos_ninjas, habilidades_usadas):
     with open(archivo_ninja, "w",encoding= "utf-8") as file:
         for ninja in datos_ninjas.values():
             file.write(str(ninja) + "\n")
         print("Los ninjas se han guardado correctamente")
 #1Crear al ninja
-def crear_ninja(datos_ninjas)
+def crear_ninja(datos_ninjas, habilidades_usadas):
     nombre=input("Nombre del ninja que deseas crear :").strip()
     if nombre in datos_ninjas:
         print("Ya existe un ninja con ese nombre")
         return
-    
+    habilidades=generar_habilidades(habilidades_usadas)
+    ninja={"nombre":nombre,
+           "fuerza":habilidades[0],
+           "agilidad":habilidades[1],
+           "resistencia":habilidades[2],
+            datos_ninjas[nombre]=ninja
+            
+           
+           
+           }
+
 
 
 
