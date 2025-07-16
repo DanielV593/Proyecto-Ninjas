@@ -192,6 +192,7 @@ def actualizar_ninja(datos_ninjas,habilidades_usadas):
            "resistencia":habilidades[2],
     }
     print(f"Ninja{'nombre'} actualizado con nuevas habilidades.")
+#Eliminar ninjas
 def eliminar_ninja(datos_ninjas):
     nombre=input("Ingrese el nombre del ninja que desea eliminar:")
     if nombre in datos_ninjas:
@@ -199,3 +200,18 @@ def eliminar_ninja(datos_ninjas):
         print("Ninja eliminado correctamente del sistema.")
     else:
         print('El ninja no existe.')
+#Menu para entrar a la gestion de ninjas
+def menu_ninjas():
+    while True:
+        print("\n----MENU DE NINJAS ----")
+        print("1.Crear ninja")
+        print("2.Leer ninjas")
+        print("3.Actualizar ninjas")
+        print("4.Eliminar ninjas")
+        print("5.Guardar ninjas")
+        print("6.Cerrar sesion")
+        
+
+
+
+
