@@ -102,6 +102,7 @@ def menu():
         
         if opcion == "1":
             crear_usuario(datos)
+            menu_ninjas()
         elif opcion == "2":
             leer_usuarios(datos)
         elif opcion == "3":
@@ -210,8 +211,22 @@ def menu_ninjas():
         print("4.Eliminar ninjas")
         print("5.Guardar ninjas")
         print("6.Cerrar sesion")
-        
-
-
+        opcion=input("Selecciona una opcion: ")
+        if opcion =="1":
+            crear_ninja(datos_ninjas, habilidades_usadas)
+        elif opcion =="2":
+            leer_ninja(datos_ninjas)
+        elif opcion =="3":
+            actualizar_ninja(datos_ninjas, habilidades_usadas)
+        elif opcion =="4":
+            eliminar_ninja(datos_ninjas)
+        elif opcion =="5":
+            guardar_datos(datos_ninjas)
+        elif opcion =="6": 
+            print("Sesion de ninjas cerrado.")
+            break
+        else:
+            print("Opcion invalido.intente de nuevo")
+menu()
 
 
