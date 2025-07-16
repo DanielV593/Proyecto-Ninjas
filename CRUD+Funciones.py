@@ -125,12 +125,12 @@ def menu():
         else: 
             print("Opcion invalida... Por favor ingrese una del menu")
 
-
+menu()
 #crear archivo donde se va a guardar los datos de los ninjas creados.
 def cargar_ninjas():
-    if not os._exits(archivo_ninja):
+    if not os.path.exists(archivo_ninja):
         return{}
-    with open(archivo_ninja,"r",encoding="uft-8") as file:
+    with open(archivo_ninja, "r", encoding="uft-8") as file:
         lineas=file.readlines()
         datos_ninjas={}
         for linea in lineas:
@@ -181,6 +181,7 @@ def leer_ninja(datos_ninjas):
         for ninja in datos_ninjas.values():
             print(f"Nombre: {ninja['nombre']} | Fuerza:{ninja['fuerza']} | Agilidaad: {ninja['agilidad']} | Resistencia: {ninja['resistencia']} ")
     
+
 
 
 
