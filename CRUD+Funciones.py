@@ -142,7 +142,12 @@ def cargar_ninjas():
                 continue
         return datos_ninjas
 #guardar datos de los ninjas creados en el archivo
-
+def guardar_ninjas(datos_ninjas):
+    with open(archivo_ninja, "w",encoding= "utf-8") as file:
+        for ninja in datos_ninjas.values():
+            file.write(str(ninja) + "\n")
+        print("Los ninjas se han guardado correctamente")
+        
 
 
 
