@@ -185,4 +185,10 @@ def actualizar_ninja(datos_ninjas,habilidades_usadas):
     if nombre not in datos_ninjas:
         print("Ninja no encontrado.")
         return
-    
+    habilidades=generar_habilidades(habilidades_usadas)
+    datos_ninjas[nombre]={
+         "fuerza":habilidades[0],
+           "agilidad":habilidades[1],
+           "resistencia":habilidades[2],
+    }
+    print(f"Ninja{'nombre'} actualizado con nuevas habilidades.")
