@@ -147,7 +147,13 @@ def guardar_ninjas(datos_ninjas):
         for ninja in datos_ninjas.values():
             file.write(str(ninja) + "\n")
         print("Los ninjas se han guardado correctamente")
-        
+#1Crear al ninja
+def crear_ninja(datos_ninjas)
+    nombre=input("Nombre del ninja que deseas crear :").strip()
+    if nombre in datos_ninjas:
+        print("Ya existe un ninja con ese nombre")
+        return
+    
 
 
 
