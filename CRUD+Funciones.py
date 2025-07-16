@@ -131,7 +131,7 @@ menu()
 def cargar_ninjas():
     if not os.path.exists(archivo_ninja):
         return{}
-    with open(archivo_ninja, "r", encoding="uft-8") as file:
+    with open(archivo_ninja, "r", encoding="utf-8") as file:
         lineas=file.readlines()
         datos_ninjas={}
         for linea in lineas:
@@ -188,9 +188,10 @@ def actualizar_ninja(datos_ninjas,habilidades_usadas):
         return
     habilidades=generar_habilidades(habilidades_usadas)
     datos_ninjas[nombre]={
-         "fuerza":habilidades[0],
-           "agilidad":habilidades[1],
-           "resistencia":habilidades[2],
+        "nombre":nombre,
+        "fuerza":habilidades[0],
+        "agilidad":habilidades[1],
+        "resistencia":habilidades[2],
     }
     print(f"Ninja{'nombre'} actualizado con nuevas habilidades.")
 #Eliminar ninjas
@@ -203,6 +204,8 @@ def eliminar_ninja(datos_ninjas):
         print('El ninja no existe.')
 #Menu para entrar a la gestion de ninjas
 def menu_ninjas():
+    datos_ninjas=cargar_ninjas()
+    habilidades_usadas=[]
     while True:
         print("\n----MENU DE NINJAS ----")
         print("1.Crear ninja")
@@ -227,6 +230,6 @@ def menu_ninjas():
             break
         else:
             print("Opcion invalido.intente de nuevo")
-menu()
+menu_ninjas()
 
 
