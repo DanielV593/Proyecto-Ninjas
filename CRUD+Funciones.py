@@ -112,7 +112,7 @@ def menu():
             guardar_datos(datos)
         elif opcion == "6":
             login(datos)
-            menu_ninjas()
+            
 
         elif opcion == "7":
             confirmar = input("Seguro/a que desea salir?(Sus cambios no se guardaran): (s/n)").lower()
@@ -127,63 +127,10 @@ def menu():
 
 
 
-#Se crea el archivo donde se va a guardar los datos de los ninjas.
-def cargar_ninjas():
-    if not os.path.exists(archivo_ninja):
-        return{}
-    with open(archivo_ninja,"r",encoding="utf-8") as file:
-        lineas = file.readlines()
-        datos_ninjas={}
-        for linea in lineas:
-            try:
-                ninja=eval(linea.strip())
-                nombre=ninja["nombre"]
-                datos_ninjas[nombre]=ninja
-            except:  
-                continue
-        return datos_ninjas
-    #guardar datos en el archivo   
-def guardar_ninjas(datos_ninjas):
-    with open(archivo_ninja, "w",encoding='utf-8') as file:
-        for ninja in datos_ninjas.values():
-            file.write(str(ninja) + "\n")
-    print("Los ninjas se han guardado corectamente.")
 
 
 
-#1.Crea al ninja
-def crear_ninjas(datos_ninjas , habilidades_usadas):
-    nombre=input("Nombre del ninja: ").strip()
-    if nombre in datos_ninjas:
-        print("Ya existe un ninja con ese nombre.")
-        return
-    habilidades = generar_habilidades(habilidades_usadas)
-    ninja={"nombre":nombre, "fuerza":habilidades[0],"agilidad":habilidades[1],"resistencia":habilidades[2] }
-    datos_ninjas[nombre]=ninja
-    print(f"Ninja '{nombre}'creado con habilidades unicas. ")
 
-def generar_habilidades(habilidades_usadas):
-    habilidades=[]
-    valor=10
-    while len(habilidades)<3:
-        if valor not in habilidades_usadas:
-            habilidades.append(valor)
-            habilidades_usadas.append(valor)
-        valor = valor + 10
-        if valor> 100:
-            valor=10
-            return habilidades
-menu()
-def menu_ninjas():
-    while True:
-        print("\n---MENU DE NINJAS ---")
-        print("1.Crear ninja")
-        print("2.Lista de ninjas ")
-        print("3.Actualizar ninja ")
-        print("4.Eliminar  ninja ")
-        print("5.Guardar ninja ")
-        print("6.Cerrar sesion ")
-        opcion=input("Selecciona una opcion: ")
-        if opcion == "1":
-            crear_ninjas()
-            a
+
+
+            
