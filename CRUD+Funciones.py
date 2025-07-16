@@ -126,7 +126,14 @@ def menu():
             print("Opcion invalida... Por favor ingrese una del menu")
 
 
-
+#crear archivo donde se va a guardar los datos de los ninjas creados.
+def cargar_ninjas():
+    if not os._exits(archivo_ninja):
+        return[]
+with open(archivo_ninja,"r",encoding="uft-8") as file:
+    lineas=file.readlines()
+    datos_ninjas={}
+    for linea in lineas:
 
 
 
