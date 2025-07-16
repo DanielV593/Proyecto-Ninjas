@@ -3,7 +3,7 @@ archivo = "ususarios.txt"
 archivo_ninja="ninja.txt"
 #1. Cargar los datos del archivo 
 
-def cargar_datos():
+"""def cargar_datos():
     if not os.path.exists(archivo): 
         return {}
     with open(archivo, "r", encoding="utf-8") as file:
@@ -125,7 +125,7 @@ def menu():
         else: 
             print("Opcion invalida... Por favor ingrese una del menu")
 
-menu()
+menu()"""
 #crear archivo donde se va a guardar los datos de los ninjas creados.
 def cargar_ninjas():
     if not os.path.exists(archivo_ninja):
@@ -180,22 +180,9 @@ def leer_ninja(datos_ninjas):
     else:
         for ninja in datos_ninjas.values():
             print(f"Nombre: {ninja['nombre']} | Fuerza:{ninja['fuerza']} | Agilidaad: {ninja['agilidad']} | Resistencia: {ninja['resistencia']} ")
+def actualizar_ninja(datos_ninjas,habilidades_usadas):
+    nombre=input("Ingrese el nombre del ninja a actualizar:")
+    if nombre not in datos_ninjas:
+        print("Ninja no encontrado.")
+        return
     
-
-
-
-
-
-            
-           
-           
-        
-
-
-
-
-
-
-
-
-            
