@@ -161,6 +161,7 @@ def crear_ninja(datos_ninjas, habilidades_usadas):
             }
     datos_ninjas[nombre]=ninja
     print(f"Ninja'{nombre}' creado con habilidades unicas.")
+#generar habilidades sin que se repita para cada ninja.
 def generar_habilidades(habilidades_usadas):
     habilidades=[]
     valor=30
@@ -172,6 +173,13 @@ def generar_habilidades(habilidades_usadas):
         if valor>100:
             valor=20
     return habilidades
+#2.leer ninja creado.
+def leer_ninja(datos_ninjas):
+    if not datos_ninjas:
+        print("No hay ninjas registrados.")
+    else:
+        for ninja in datos_ninjas.values():
+            print(f"Nombre: {ninja['nombre']} | Fuerza:{ninja['fuerza']} | Agilidaad: {ninja['agilidad']} | Resistencia: {ninja['resistencia']} ")
     
 
 
