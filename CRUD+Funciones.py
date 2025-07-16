@@ -129,14 +129,21 @@ def menu():
 #crear archivo donde se va a guardar los datos de los ninjas creados.
 def cargar_ninjas():
     if not os._exits(archivo_ninja):
-        return[]
-with open(archivo_ninja,"r",encoding="uft-8") as file:
-    lineas=file.readlines()
-    datos_ninjas={}
-    for linea in lineas:
-        try:
-            ninja=eval(linea.strip())
-        except:
+        return{}
+    with open(archivo_ninja,"r",encoding="uft-8") as file:
+        lineas=file.readlines()
+        datos_ninjas={}
+        for linea in lineas:
+            try:
+                ninja=eval(linea.strip())
+                nombre=ninja["nombre"]
+                datos_ninjas[nombre]=ninja
+            except:
+                continue
+        return datos_ninjas
+#guardar datos de los ninjas creados en el archivo
+
+
 
 
 
