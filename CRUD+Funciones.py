@@ -158,11 +158,14 @@ def crear_ninja(datos_ninjas, habilidades_usadas):
            "fuerza":habilidades[0],
            "agilidad":habilidades[1],
            "resistencia":habilidades[2],
-            datos_ninjas[nombre]=ninja
+            }
+    datos_ninjas[nombre]=ninja
+    print(f"Ninja'{nombre}' creado con habilidades unicas.")
+
             
            
            
-           }
+        
 
 
 
