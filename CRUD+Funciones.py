@@ -152,6 +152,7 @@ def guardar_ninjas(datos_ninjas):
 def crear_ninja(datos_ninjas, habilidades_usadas):
     if len(datos_ninjas) >= 1:
         print("Ya se ha creado un ninja no puedes crear mas.")
+        return
     nombre=input("Nombre del ninja que deseas crear :").strip()
     if nombre in datos_ninjas:
         print("Ya existe un ninja con ese nombre")
