@@ -1,5 +1,5 @@
 import os
-archivo = "ususarios.txt"
+archivo = "usuarios.txt"
 archivo_ninja="ninja.txt"
 #1. Cargar los datos del archivo 
 
@@ -102,7 +102,7 @@ def menu():
         
         if opcion == "1":
             crear_usuario(datos)
-            menu_ninjas()
+       
         elif opcion == "2":
             leer_usuarios(datos)
         elif opcion == "3":
@@ -112,8 +112,9 @@ def menu():
         elif opcion == "5":
             guardar_datos(datos)
         elif opcion == "6":
-            login(datos)
-            
+           if  login(datos):
+                menu_ninjas()
+                print("Regresando al menu de usuarios.")
 
         elif opcion == "7":
             confirmar = input("Seguro/a que desea salir?(Sus cambios no se guardaran): (s/n)").lower()
@@ -126,7 +127,7 @@ def menu():
         else: 
             print("Opcion invalida... Por favor ingrese una del menu")
 
-menu()
+
 #crear archivo donde se va a guardar los datos de los ninjas creados.
 def cargar_ninjas():
     if not os.path.exists(archivo_ninja):
@@ -233,6 +234,6 @@ def menu_ninjas():
             break
         else:
             print("Opcion invalido.intente de nuevo")
-menu_ninjas()
+menu()
 
 
