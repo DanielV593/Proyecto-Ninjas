@@ -150,6 +150,8 @@ def guardar_ninjas(datos_ninjas):
         print("Los ninjas se han guardado correctamente")
 #1Crear al ninja
 def crear_ninja(datos_ninjas, habilidades_usadas):
+    if len(datos_ninjas) >= 1:
+        print("Ya se ha creado un ninja no puedes crear mas.")
     nombre=input("Nombre del ninja que deseas crear :").strip()
     if nombre in datos_ninjas:
         print("Ya existe un ninja con ese nombre")
@@ -224,7 +226,7 @@ def menu_ninjas():
         elif opcion =="4":
             eliminar_ninja(datos_ninjas)
         elif opcion =="5":
-            guardar_datos(datos_ninjas)
+            guardar_ninjas(datos_ninjas)
         elif opcion =="6": 
             print("Sesion de ninjas cerrado.")
             break
