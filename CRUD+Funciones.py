@@ -1,10 +1,12 @@
 import os
 archivo = "usuarios.txt"
 archivo_ninja="ninja.txt"
+
 #1. Cargar los datos del archivo 
 
 def cargar_datos():
     if not os.path.exists(archivo): 
+        open(archivo, "w", encoding="utf-8").close()
         return {}
     with open(archivo, "r", encoding="utf-8") as file:
         lineas = file.readlines()
@@ -37,7 +39,7 @@ def crear_usuario(datos):
     if len(contrasena) < 6: 
        print("Contraseña muy corta por favor ingrese otra: ")
        return
-    usuario= {"correo": correo, "contraseña": contrasena}
+    usuario= {"correo": correo, "contrasena": contrasena}
     datos[correo] = usuario 
     print("Usuario registrado correctamente...")
     
@@ -48,7 +50,7 @@ def leer_usuarios(datos):
         print("No existen usuarios registrados...")
     else: 
         for usuario in datos.values():
-            print(f"correo: {usuario['correo']} | Contraseña: {usuario['contrasena']}")
+            print(f"Correo: {usuario['correo']} | Contraseña: {usuario['contrasena']}")
             
 #5. Actualizar contraseña
 def actualizar_contraseña(datos): 
@@ -80,11 +82,11 @@ def login(datos):
   
     if correo in datos and datos[correo]["contrasena"] == contrasena:
         print("ACCESO EXITOSO...")
-        return True
-        
+        return True     
     else:
         print("Correo o Contraseña Incorrectos ")
         return False
+    
 #8. MENU DEL SISTEMA
 
 def menu():
@@ -131,6 +133,7 @@ def menu():
 #crear archivo donde se va a guardar los datos de los ninjas creados.
 def cargar_ninjas():
     if not os.path.exists(archivo_ninja):
+        open(archivo_ninja, "w", encoding="utf-8").close()
         return{}
     with open(archivo_ninja, "r", encoding="utf-8") as file:
         lineas=file.readlines()
