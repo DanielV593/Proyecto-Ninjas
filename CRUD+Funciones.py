@@ -1,4 +1,5 @@
 import os
+from collections import deque
 archivo = "usuarios.txt"
 archivo_ninja="ninja.txt"
 
@@ -117,7 +118,6 @@ def menu():
            if  login(datos):
                 menu_ninjas()
                 print("Regresando al menu de usuarios.")
-
         elif opcion == "7":
             confirmar = input("Seguro/a que desea salir?(Sus cambios no se guardaran): (s/n)").lower()
             if confirmar == "s": 
@@ -201,6 +201,7 @@ def actualizar_ninja(datos_ninjas,habilidades_usadas):
         "resistencia":habilidades[2],
     }
     print(f"Ninja{'nombre'} actualizado con nuevas habilidades.")
+
 #Eliminar ninjas
 def eliminar_ninja(datos_ninjas):
     nombre=input("Ingrese el nombre del ninja que desea eliminar:")
@@ -209,18 +210,72 @@ def eliminar_ninja(datos_ninjas):
         print("Ninja eliminado correctamente del sistema.")
     else:
         print('El ninja no existe.')
+
+#ordenamietno y busqueda
+def quicksort(lista):
+    if len(lista) <= 1:
+        return lista
+    pivote = lista[0]
+    mayores = [x for x in lista[1:] if x['victorias'] > pivote['victorias']]
+    menores = [x for x in lista[1:] if x['victorias'] <= pivote['victorias']]
+    return quicksort(mayores) + [pivote] + quicksort(menores)
+
+def buscar_lineal(lista, nombre):
+    for ninja in lista:
+        if ninja['nombre'].lower() == nombre.lower():
+            return ninja
+    return None
+
+def buscar_binaria(lista, nombre):
+    izq, der = 0, len(lista)-1
+    while izq <= der:
+        mid = (izq + der) // 2
+        if lista[mid]['nombre'].lower() == nombre.lower():
+            return lista[mid]
+        elif lista[mid]['nombre'].lower() < nombre.lower():
+            izq = mid + 1
+        else:
+            der = mid - 1
+    return None
+
+#funcion torneo 
+def torneo(ninjas):
+    cola = deque(ninjas)
+    while len(cola) > 1:
+        a = cola.popleft()
+        b = cola.popleft()
+        ganador = a if a['fuerza'] > b['fuerza'] else b
+        ganador['victorias'] += 1
+        cola.append(ganador)
+    return cola.pop()
+
+#mostrar ranking por victorias
+def mostrar_ranking(datos_ninjas):
+    for ninja in datos_ninjas.values():
+        if "victorias" not in ninja:
+            ninja["victorias"] = 0
+
+    lista = list(datos_ninjas.values())
+    quicksort(lista)
+    print("\n--- RANKING DE NINJAS ---")
+    for i, ninja in enumerate(lista, 1):
+        print(f"{i}. {ninja['nombre']} - Victorias: {ninja['victorias']}")
+
 #Menu para entrar a la gestion de ninjas
 def menu_ninjas():
     datos_ninjas=cargar_ninjas()
     habilidades_usadas=[]
     while True:
         print("\n----MENU DE NINJAS ----")
-        print("1.Crear ninja")
-        print("2.Leer ninjas")
-        print("3.Actualizar ninjas")
-        print("4.Eliminar ninjas")
-        print("5.Guardar ninjas")
-        print("6.Cerrar sesion")
+        print("1. Crear ninja")
+        print("2. Leer ninjas")
+        print("3. Actualizar ninjas")
+        print("4. Eliminar ninjas")
+        print("5. Guardar ninjas")
+        print("6. Mostrar ranking")
+        print("7. Simular torneo")
+        print("8. Cerrar sesion")
+
         opcion=input("Selecciona una opcion: ")
         if opcion =="1":
             crear_ninja(datos_ninjas, habilidades_usadas)
@@ -232,11 +287,14 @@ def menu_ninjas():
             eliminar_ninja(datos_ninjas)
         elif opcion =="5":
             guardar_ninjas(datos_ninjas)
-        elif opcion =="6": 
+        elif opcion =="6":
+            mostrar_ranking(datos_ninjas)
+        elif opcion =="7":
+            ganador = torneo(list(datos_ninjas.values()))
+            print(f"Campeon del torneo: {ganador['nombre']}")
+        elif opcion =="8": 
             print("Sesion de ninjas cerrado.")
             break
         else:
             print("Opcion invalido.intente de nuevo")
 menu()
-
-
