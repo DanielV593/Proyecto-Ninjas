@@ -233,20 +233,22 @@ def guardar_ninjas(datos_ninjas):
 
 #Crear al ninja
 
-def crear_ninja(datos_ninjas):
+def crear_ninja(datos_ninjas, habilidades_usadas):  # <--- dos argumentos
     nombre = input("Nombre del ninja que deseas crear: ").strip()
     if nombre in datos_ninjas:
         print("Ya existe un ninja con ese nombre")
         return
-    habilidades = generar_habilidades()  # //
+    habilidades = generar_habilidades(habilidades_usadas)
     ninja = {
         "nombre": nombre,
-        "fuerza": habilidades["fuerza"],
-        "agilidad": habilidades["agilidad"],
-        "resistencia": habilidades["resistencia"],
+        "fuerza": habilidades[0],
+        "agilidad": habilidades[1],
+        "resistencia": habilidades[2],
     }
     datos_ninjas[nombre] = ninja
     print(f"Ninja '{nombre}' creado con habilidades únicas.")
+
+
 
 #generar habilidades sin que se repita para cada ninja.
 def generar_habilidades(habilidades_usadas):
@@ -318,10 +320,13 @@ def buscar_conexion(grafo, origen, destino, visitados=None):
             return True
     return False
 
+
+#8. MENU DEL SISTEMA
+
 def menu_ninjas():
-    datos_ninjas=cargar_ninjas()
+    datos_ninjas = cargar_ninjas()
     grafo_ninjas = cargar_grafo() 
-    habilidades_usadas=[]
+    habilidades_usadas = []
     while True:
         print("\n----MENU DE NINJAS ----")
         print("1.Crear ninja")
@@ -329,10 +334,10 @@ def menu_ninjas():
         print("3. Crear conexion entre ninjas (Grafo)")
         print("4.Eliminar ninjas")
         print("5.Guardar ninjas y grafo")
-        print("6.Cerrar sesion")
-        print("7. Combatir 1vs1 entre ninjas")
+        print("6. Combatir 1vs1 entre ninjas")
+        print("7. Cerrar sesion")
         print("8. Mostrar recorridos en el arbol")
-        opcion=input("Selecciona una opcion: ")
+        opcion = input("Selecciona una opcion: ")
 
         if opcion == "1":
             crear_ninja(datos_ninjas, habilidades_usadas)
@@ -346,23 +351,19 @@ def menu_ninjas():
             else:
                 print("Uno o ambos ninjas no existen.")
         elif opcion == "4":
-            mostrar_conexiones(grafo_ninjas)
+            eliminar_ninja(datos_ninjas)  
         elif opcion == "5":
-            n1 = input("Origen: ")
-            n2 = input("Destino: ")
-            if buscar_conexion(grafo_ninjas, n1, n2):
-                print(f" Existe conexión entre {n1} y {n2}.")
-            else:
-                print(f" No hay conexión entre {n1} y {n2}.")
-        elif opcion == "6":
             guardar_ninjas(datos_ninjas)
             guardar_grafo(grafo_ninjas)
         elif opcion == "7":
             print("Cerrando sesión de ninjas.")
             break
+        elif opcion == "6":
+            combate_1vs1(datos_ninjas)  
+        elif opcion == "8":
+            mostrarRecorridos()
         else:
             print("Opción inválida.")
-#8. MENU DEL SISTEMA
 
 def menu():
     datos = cargar_datos()
@@ -403,4 +404,5 @@ def menu():
             print("Opcion invalida... Por favor ingrese una del menu")
 
 #Menu para entrar a la gestion de ninjas
+
 menu()
