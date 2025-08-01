@@ -117,7 +117,7 @@ def crear_usuario(datos):
         "contrasena": contrasena
     }
 
-    print(f" Usuario '{nombre_usuario}' creado exitosamente con el correo {correo} - Juan Vasquez")
+    print(f" Usuario '{nombre_usuario}' creado exitosamente con el correo {correo} ")
 # Leer ususarios registrados 
 def leer_usuarios(datos):  
     if not datos: 
