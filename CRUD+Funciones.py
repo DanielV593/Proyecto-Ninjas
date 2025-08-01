@@ -1,25 +1,28 @@
 import os
 import random
+import json
+import re
 
 archivo = "usuarios.txt"
 archivo_ninja="ninja.txt"
 archivo_habilidades = "habilidades_ninja.txt"
+archivo_grafo = "grafo_ninjas.json"
 
 #Arbol Binario de Habilidades
 
-arbol = {'valor':'fuerza',
-        'izquierda':{
-            'valor':'agilidad',
-            'izquierda':{'valor':'destreza','izquierda':None,'derecha':None},
-            'derecha':None
-        },
+arbol = {
+    'valor':'fuerza',
+    'izquierda':{
+        'valor':'agilidad',
+        'izquierda':{'valor':'destreza','izquierda':None,'derecha':None},
+        'derecha':None
+    },
         'derecha':{
-            'valor':'resistencia',
-            'izquierda':None,
-            'derecha':{'valor':'velocidad','izquierda':None, 'derecha':None}
-        }
+        'valor':'resistencia',
+        'izquierda':None,
+        'derecha':{'valor':'velocidad','izquierda':None, 'derecha':None}
+    }
 }
-#Recorridos en el Arbol Binario
 
 def inOrder(nodo,Recorrido):
     if nodo is not None:
@@ -50,6 +53,23 @@ def mostrarRecorridos():
     print("PreOrder:", pre_orden)
     print("PostOrder:", post_orden)
 
+#Validaciones
+def validar_correo(correo):  
+    return "@" in correo and "." in correo and correo.strip() != ""
+
+def validar_contrasena(contra):  
+    return len(contra) >= 6
+
+def validar_nombre_ninja(nombre):  
+    return nombre.isalpha() and len(nombre) > 0
+def validar_nombre_usuario(nombre):
+    import re
+    if not isinstance(nombre, str):
+        return False
+    nombre = nombre.strip()
+    patron = r'^[A-Za-z0-9 @._-]+$'
+    return bool(re.match(patron, nombre)) and len(nombre) > 0
+
 #Cargar los datos del archivo 
 
 def cargar_datos():
@@ -67,16 +87,77 @@ def cargar_datos():
             except: 
                 continue
         return datos
-#Guardar en el Archivo combates.txt  
+def guardar_datos(datos):
+    with open(archivo, "w", encoding="utf-8") as file:
+        for correo, usuario in datos.items():
+            usuario["correo"] = correo  
+            file.write(str(usuario) + "\n")
+    print("Los datos se han guardado correctamente")
+# Crear usuario - Registros
+def crear_usuario(datos):
+    correo = input("Ingrese el correo: ")
 
-def guardar_archivo():
-    habilidades=[]
-    inOrder(arbol,habilidades)
-    with open('combates.txt','w', encoding="utf-8") as archivo:
-        for hab in habilidades:
-            archivo.write(hab + "\n")
+    if correo in datos:
+        print(" El correo ingresado ya está registrado. Intente con uno diferente.")
+        return
+    if not validar_correo(correo):
+        print(" Correo no válido. Intente nuevamente.")
+        return
+    contrasena = input("Ingrese una contraseña (mínimo 6 caracteres): ")
+    if not validar_contrasena(contrasena):
+        print(" Contraseña muy corta, ingrese otra.")
+        return
+    nombre_usuario = input("Ingrese su nombre (puede incluir letras, números y caracteres especiales): ")
+    if not validar_nombre_usuario(nombre_usuario):
+        print(" Nombre inválido, solo se permiten letras, números y caracteres especiales.")
+        return
+    datos[correo] = {
+        "correo": correo,
+        "nombre": nombre_usuario,
+        "contrasena": contrasena
+    }
 
-#Generacion de habilidades
+    print(f" Usuario '{nombre_usuario}' creado exitosamente con el correo {correo} - Juan Vasquez")
+# Leer ususarios registrados 
+def leer_usuarios(datos):  
+    if not datos: 
+        print("No existen usuarios registrados...")
+    else: 
+        for usuario in datos.values():
+            print(f"Correo: {usuario['correo']} | Contraseña: {usuario['contrasena']}")
+# Actualizar contraseña
+def actualizar_contraseña(datos): 
+    correo = input("Ingrese el correo del usuario a actualizar: ")
+    if correo not in datos:
+        print("El correo no esta registrado o no existe, por favor ingresa uno valido: ")
+        return
+    nueva_contra = input("Ingrese una nueva contraseña (Minimo 6 caracteres): ")
+    if len(nueva_contra) < 6:
+        print("La contraseña ingresada es demasiado corta. Intente nuevamente: ")
+        return
+    datos [correo]["contrasena"] = nueva_contra
+    print("Contraseña actualizada correctamente ")           
+
+# Eliminar usuario
+def eliminar_usuario(datos): 
+    correo = input("Ingrese el correo del usuario que se desea eliminar: ")
+    if correo in datos:
+        del datos[correo]
+        print("El usuario ha sido eliminado correctamente: ")
+    else: 
+        print("El correo ingresado no existe o no esta registrado...") 
+# Loggear con los datos registrados USUARIO Y CONTRASEÑA
+
+def login(datos): 
+    correo = input("Ingrese el Correo: ")
+    contrasena = input("Ingrese la Contraseña: ")
+  
+    if correo in datos and datos[correo]["contrasena"] == contrasena:
+        print("ACCESO EXITOSO...")
+        return True     
+    else:
+        print("Correo o Contraseña Incorrectos ")
+        return False   
 
 def generar_habilidades():
     habilidades = []
@@ -124,88 +205,21 @@ def combate_1vs1(datos_ninjas):
         f.write(f"{nombre1}: {n1}\n")
         f.write(f"{nombre2}: {n2}\n")
         f.write(f"Ganador: {ganador}\n")
-    
-#2. Apartado para guardar datos en el archivo creado... 
-def guardar_datos(datos):
-    with open(archivo, "w", encoding="utf-8") as file:
-        for usuario in datos.values():
-            file.write(str(usuario) + "\n")
-    print("Los datos se han guardado correctamente")
-    
-#3. Crear ususario - Registros
-def crear_usuario(datos):
-    correo = input("Ingrese el correo: ")
-    if correo in datos: 
-        print("El correo ingresado ya se encuentra registrado, por favor ingrese uno diferente:  ")
-    if "@" not in correo or "." not in correo:
-        print("Correo no valido")
-        return
-    contrasena = input("Ingrese una contraseña (minimo 6 caracteres): ")
-    if len(contrasena) < 6: 
-       print("Contraseña muy corta por favor ingrese otra: ")
-       return
-    usuario= {"correo": correo, "contrasena": contrasena}
-    datos[correo] = usuario 
-    print("Usuario registrado correctamente...")
    
-   
-#4. Leer ususarios registrados 
-def leer_usuarios(datos): 
-    if not datos: 
-        print("No existen usuarios registrados...")
-    else: 
-        for usuario in datos.values():
-            print(f"Correo: {usuario['correo']} | Contraseña: {usuario['contrasena']}")
-            
-#5. Actualizar contraseña
-def actualizar_contraseña(datos): 
-    correo = input("Ingrese el correo del usuario a actualizar: ")
-    if correo not in datos:
-        print("El correo no esta registrado o no existe, por favor ingresa uno valido: ")
-        return
-    nueva_contra = input("Ingrese una nueva contraseña (Minimo 6 caracteres): ")
-    if len(nueva_contra) < 6:
-        print("La contraseña ingresada es demasiado corta. Intente nuevamente: ")
-        return
-    datos [correo]["contrasena"] = nueva_contra
-    print("Contraseña actualizada correctamente ")
-    
-#6. Eliminar usuario
-def eliminar_usuario(datos): 
-    correo = input("Ingrese el correo del usuario que se desea eliminar: ")
-    if correo in datos:
-        del datos[correo]
-        print("El usuario ha sido eliminado correctamente: ")
-    else: 
-        print("El correo ingresado no existe o no esta registrado...")
-        
-#7. Loggear con los datos registrados USUARIO Y CONTRASEÑA
-
-def login(datos): 
-    correo = input("Ingrese el Correo: ")
-    contrasena = input("Ingrese la Contraseña: ")
-  
-    if correo in datos and datos[correo]["contrasena"] == contrasena:
-        print("ACCESO EXITOSO...")
-        return True     
-    else:
-        print("Correo o Contraseña Incorrectos ")
-        return False
-    
-#crear archivo donde se va a guardar los datos de los ninjas creados.
+# Cargar ninjas
 def cargar_ninjas():
     if not os.path.exists(archivo_ninja):
         open(archivo_ninja, "w", encoding="utf-8").close()
-        return{}
+        return {}
     with open(archivo_ninja, "r", encoding="utf-8") as file:
-        lineas=file.readlines()
-        datos_ninjas={}
+        lineas = file.readlines()
+        datos_ninjas = {}
         for linea in lineas:
             try:
-                ninja=eval(linea.strip())
-                nombre=ninja["nombre"]
-                datos_ninjas[nombre]=ninja
-            except:
+                ninja = json.loads(linea.strip())
+                nombre = ninja["nombre"]
+                datos_ninjas[nombre] = ninja
+            except json.JSONDecodeError:
                 continue
         return datos_ninjas
     
@@ -214,24 +228,25 @@ def cargar_ninjas():
 def guardar_ninjas(datos_ninjas):
     with open(archivo_ninja, "w",encoding= "utf-8") as file:
         for ninja in datos_ninjas.values():
-            file.write(str(ninja) + "\n")
+            file.write(json.dumps(ninja) + "\n")
         print("Los ninjas se han guardado correctamente")
 
-#1Crear al ninja
+#Crear al ninja
 
-def crear_ninja(datos_ninjas, habilidades_usadas):
-    nombre=input("Nombre del ninja que deseas crear :").strip()
+def crear_ninja(datos_ninjas):
+    nombre = input("Nombre del ninja que deseas crear: ").strip()
     if nombre in datos_ninjas:
         print("Ya existe un ninja con ese nombre")
         return
-    habilidades=generar_habilidades(habilidades_usadas)
-    ninja={"nombre":nombre,
-           "fuerza":habilidades[0],
-           "agilidad":habilidades[1],
-           "resistencia":habilidades[2],
-            }
-    datos_ninjas[nombre]=ninja
-    print(f"Ninja'{nombre}' creado con habilidades unicas.")
+    habilidades = generar_habilidades()  # //
+    ninja = {
+        "nombre": nombre,
+        "fuerza": habilidades["fuerza"],
+        "agilidad": habilidades["agilidad"],
+        "resistencia": habilidades["resistencia"],
+    }
+    datos_ninjas[nombre] = ninja
+    print(f"Ninja '{nombre}' creado con habilidades únicas.")
 
 #generar habilidades sin que se repita para cada ninja.
 def generar_habilidades(habilidades_usadas):
@@ -246,78 +261,107 @@ def generar_habilidades(habilidades_usadas):
             valor=20
     return habilidades
 
-#2.leer ninja creado.
+# leer ninja creado.
 def leer_ninja(datos_ninjas):
     if not datos_ninjas:
         print("No hay ninjas registrados.")
     else:
         for ninja in datos_ninjas.values():
             print(f"Nombre: {ninja['nombre']} | Fuerza:{ninja['fuerza']} | Agilidaad: {ninja['agilidad']} | Resistencia: {ninja['resistencia']} ")
-
-#Actualizar Nija
-
-def actualizar_ninja(datos_ninjas,habilidades_usadas):
-    nombre=input("Ingrese el nombre del ninja a actualizar:")
-    if nombre not in datos_ninjas:
-        print("Ninja no encontrado.")
-        return
-    habilidades=generar_habilidades(habilidades_usadas)
-    datos_ninjas[nombre]={
-        "nombre":nombre,
-        "fuerza":habilidades[0],
-        "agilidad":habilidades[1],
-        "resistencia":habilidades[2],
-    }
-    print(f"Ninja{'nombre'} actualizado con nuevas habilidades.")
-
-
-#Eliminar ninjas
 def eliminar_ninja(datos_ninjas):
-    nombre=input("Ingrese el nombre del ninja que desea eliminar:")
+    nombre = input("Ingrese el nombre del ninja a eliminar: ")
     if nombre in datos_ninjas:
         del datos_ninjas[nombre]
         print("Ninja eliminado correctamente del sistema.")
     else:
         print('El ninja no existe.')
+        
 
+def cargar_grafo():  
+    if os.path.exists(archivo_grafo):
+        with open(archivo_grafo, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
+
+def guardar_grafo(grafo): 
+    with open(archivo_grafo, "w", encoding="utf-8") as f:
+        json.dump(grafo, f)
+    print("Grafo guardado correctamente.")
+
+def agregar_conexion(grafo, origen, destino):
+    if origen not in grafo:
+        grafo[origen] = []
+    if destino not in grafo:
+        grafo[destino] = []
+    grafo[origen].append(destino)
+    grafo[destino].append(origen)
+    print(f"Conexión creada entre {origen} y {destino}.")
+
+def mostrar_conexiones(grafo):
+    if not grafo:
+        print("No hay conexiones entre ninjas aún.")
+        return
+    print("\n--- GRAFO DE NINJAS ---")
+    for ninja, conexiones in grafo.items():
+        print(f"{ninja} -> {', '.join(conexiones)}")
+
+def buscar_conexion(grafo, origen, destino, visitados=None):
+    if visitados is None:
+        visitados = set()
+    if origen not in grafo:
+        return False
+    if origen == destino:
+        return True
+    visitados.add(origen)
+    for vecino in grafo[origen]:
+        if vecino not in visitados and buscar_conexion(grafo, vecino, destino, visitados):
+            return True
+    return False
 
 def menu_ninjas():
     datos_ninjas=cargar_ninjas()
+    grafo_ninjas = cargar_grafo() 
     habilidades_usadas=[]
     while True:
         print("\n----MENU DE NINJAS ----")
         print("1.Crear ninja")
         print("2.Leer ninjas")
-        print("3.Actualizar ninjas")
+        print("3. Crear conexion entre ninjas (Grafo)")
         print("4.Eliminar ninjas")
-        print("5.Guardar ninjas")
+        print("5.Guardar ninjas y grafo")
         print("6.Cerrar sesion")
         print("7. Combatir 1vs1 entre ninjas")
         print("8. Mostrar recorridos en el arbol")
         opcion=input("Selecciona una opcion: ")
-        if opcion =="1":
-            while True:
-                crear_ninja(datos_ninjas, habilidades_usadas)
-                continuar = input("Deseas crear otro ninja?: ")
-                if continuar != "s":
-                    break
-        elif opcion =="2":
+
+        if opcion == "1":
+            crear_ninja(datos_ninjas, habilidades_usadas)
+        elif opcion == "2":
             leer_ninja(datos_ninjas)
-        elif opcion =="3":
-            actualizar_ninja(datos_ninjas, habilidades_usadas)
-        elif opcion =="4":
-            eliminar_ninja(datos_ninjas)
-        elif opcion =="5":
+        elif opcion == "3":
+            n1 = input("Primer ninja: ")
+            n2 = input("Segundo ninja: ")
+            if n1 in datos_ninjas and n2 in datos_ninjas:
+                agregar_conexion(grafo_ninjas, n1, n2)
+            else:
+                print("Uno o ambos ninjas no existen.")
+        elif opcion == "4":
+            mostrar_conexiones(grafo_ninjas)
+        elif opcion == "5":
+            n1 = input("Origen: ")
+            n2 = input("Destino: ")
+            if buscar_conexion(grafo_ninjas, n1, n2):
+                print(f" Existe conexión entre {n1} y {n2}.")
+            else:
+                print(f" No hay conexión entre {n1} y {n2}.")
+        elif opcion == "6":
             guardar_ninjas(datos_ninjas)
-        elif opcion =="6": 
-            print("Sesion de ninjas cerrado.")
-            break
+            guardar_grafo(grafo_ninjas)
         elif opcion == "7":
-            combate_1vs1(datos_ninjas)
-        elif opcion == "8":
-            mostrarRecorridos()
+            print("Cerrando sesión de ninjas.")
+            break
         else:
-            print("Opcion invalido.intente de nuevo")
+            print("Opción inválida.")
 #8. MENU DEL SISTEMA
 
 def menu():
